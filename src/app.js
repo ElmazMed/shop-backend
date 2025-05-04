@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
 import express from "express";
-import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import cors from "cors";
 import mongoose from "mongoose";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
-import csurf from "csurf";
 import authRoutes from "./routes/authRoute.js";
+import productsRoutes from "./routes/productsRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-// app.use(ExpressMongoSanitize());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -25,9 +23,9 @@ const limiter = rateLimit({
   message: "Too many requests, try again later",
 });
 app.use(limiter);
-// app.use(csurf());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
