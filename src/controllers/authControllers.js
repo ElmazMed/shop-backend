@@ -32,4 +32,36 @@ const register = async (req, res) => {
   }
 };
 
-export { register };
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Please add your email and password" });
+    }
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) return res.status(404).json({ message: "invalid credentials" });
+
+    const comparedPassword = await bcrypt.compare(password, user.password);
+
+    if (!comparedPassword)
+      return res.status(400).json({ message: "Invalid credentials" });
+
+    generateToken(user._id, res);
+
+    return res.status(201).json({
+      id: user._id,
+      email,
+      username: user.username,
+    });
+  } catch (error) {
+    console.error("Error in the Login controller:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+};
+
+export { register, login };
