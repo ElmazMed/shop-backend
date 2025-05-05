@@ -1,12 +1,34 @@
 import Product from "../models/products.schema.js";
 
 const addProduct = async (req, res) => {
-  const { title, description, price, productImg } = req.body;
+  const {
+    title,
+    description,
+    price,
+    productImg,
+    quantity,
+    variantName,
+    variant,
+    variantPrice,
+    variantQuantity,
+    variantImg,
+  } = req.body;
   try {
-    if ((!title, !description, !price, !productImg)) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!title) {
+      return res.status(400).json({ message: "Please add a title" });
     }
-    const newProduct = new Product({ title, description, price, productImg });
+    const newProduct = new Product({
+      title,
+      description,
+      price,
+      productImg,
+      quantity,
+      variantName,
+      variant,
+      variantPrice,
+      variantQuantity,
+      variantImg,
+    });
     await newProduct.save();
     return res.status(201).json({ newProduct });
   } catch (error) {

@@ -19,9 +19,39 @@ const productSchema = new mongoose.Schema(
       default: 0,
       trim: true,
     },
+    quantity: {
+      type: Number,
+      default: 1,
+      trim: true,
+    },
     productImg: {
       type: String,
       required: [true, "Please add an image"],
+    },
+    variantName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    variant: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    variantPrice: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+    variantQuantity: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+    variantImg: {
+      type: String,
+      trim: true,
+      default: "",
     },
   },
   { timestamps: true }
